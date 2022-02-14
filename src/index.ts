@@ -101,18 +101,18 @@ function createVariant(
       singleVariant.variant = variant.variant;
       singleVariant.reactive = reactive;
       singleVariant.affectID = high
-        ? `h${AFFECT_ID[randomElement(AFFECT_ID.length)]}`
-        : `l${AFFECT_ID[randomElement(AFFECT_ID.length)]}`;
+        ? `${AFFECT_ID[randomElement(AFFECT_ID.length)] + 13}`
+        : `${AFFECT_ID[randomElement(AFFECT_ID.length)]}`;
       variantData.push(singleVariant);
     }
   });
   return variantData;
 }
 
-const lp = createVariant();
-const hp = createVariant(false, true);
-const lr = createVariant(true, false);
-const hr = createVariant(true, true);
+const lp = shuffleTheArray(createVariant());
+const hp = shuffleTheArray(createVariant(false, true));
+const lr = shuffleTheArray(createVariant(true, false));
+const hr = shuffleTheArray(createVariant(true, true));
 
 const finalData: VariantsReady = {
   lowProactive: lp,
@@ -156,4 +156,12 @@ function variantSwitch(variant: string): any[] {
     default:
       return ["A", "A"];
   }
+}
+
+function shuffleTheArray(array: DataShape[]) {
+  const sortedArray = array
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+  return sortedArray;
 }
